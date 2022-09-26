@@ -11,6 +11,7 @@ import (
 
 func main() {
 	counts := make(map[rune]int)
+	typeOfRune := make(map[string]int)
 	var utflen [utf8.UTFMax + 1]int // Количество длин кодировок UTF-8
 	invalid := 0                    // Количество некорректных символов UTF-8
 	in := bufio.NewReader(os.Stdin)
@@ -29,6 +30,25 @@ func main() {
 		}
 		counts[r]++
 		utflen[n]++
+		case {
+			unicode.isControl(r):
+				typeOfRune["Control"]++
+			unicode.isDigit(r):
+				typeOfRune["Digit"]++
+			unicode.isGraphic(r):
+				typeOfRune["Graphic"]++
+			unicode.isLetter(r):
+				typeOfRune["Letter"]++
+			unicode.isLower(r):
+				typtypeOfRune["Lower"]
+			unicode.isMark(r):
+				typeOfRune["Mark"]
+			unicode.IsNumber(r)
+				typeOfRune["Number"]++
+			unicode.IsNumber(r)
+				typeOfRune{t}
+		}
+
 	}
 	fmt.Printf("rune\tcount\n")
 	for c, n := range counts {
