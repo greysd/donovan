@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
+
+	"time"
 
 	"github.com/greysd/gopl.io/ch4/github"
 )
@@ -15,11 +16,19 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Printf("%d тем:\n", result.TotalCount)
-	for _, word := range strings.Fields("month, year, year+") {
+	to := time.Now().UTC()
+	for _, word := range []int{30, 365, 3650} {
+		from := to.AddDate(0, 0, -1*word)
+		fmt.Printf("Period from: %v, and to: %v\n", from, to)
 		for _, item := range result.Items {
-			fmt.Printf("%+v\n", item.CreatedAt)
-			fmt.Printf("%v")
-			fmt.Printf("#%-5d %9.9s %.55s\n", item.Number, item.User.Login, item.Title)
+			if item.CreatedAt.After(from) && item.CreatedAt.Before(to) {
+				fmt.Printf("# %4d-%02d-%02d:\t%-5d\t%9.9s %.55s\n",
+					item.CreatedAt.Year(),
+					item.CreatedAt.Month(),
+					item.CreatedAt.Day(),
+					item.Number, item.User.Login, item.Title)
+			}
 		}
+		to = from
 	}
 }
